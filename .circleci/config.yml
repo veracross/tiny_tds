@@ -91,9 +91,9 @@ jobs:
           version: 20.10.2
 
       - run:
-          name: cross build gem
+          name: cross build ports
           command: |
-            bundle exec rake gem:windows
+            bundle exec rake ports:cross
 
       - persist_to_workspace:
           root: .

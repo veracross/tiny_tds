@@ -112,12 +112,12 @@ jobs:
 workflows:
   test_supported_ruby_versions:
     jobs:
-      - test_linux:
-          matrix:
-            parameters:
-              ruby_version:
-                - '2.5.3'
-                - '2.7'
+      # - test_linux:
+      #     matrix:
+      #       parameters:
+      #         ruby_version:
+      #           - '2.5.3'
+      #           - '2.7'
 
       - test_windows:
           matrix:

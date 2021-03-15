@@ -65,9 +65,48 @@ jobs:
       shell: powershell.exe
 
     steps:
-      - run: systeminfo
+      - run:
+          name: diagnostics
+          command: |
+            systeminfo
+            pwd
+            perl --version
+            ruby --version
+            gem --version
 
-      - run: pwd
+      - run:
+          # https://www.msys2.org/news/#2020-06-29-new-packagers
+          name: prepare msys2- update keyring
+          command: |
+            C:\msys64\usr\bin\curl -O http://repo.msys2.org/msys/x86_64/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz
+            C:\msys64\usr\bin\curl -O http://repo.msys2.org/msys/x86_64/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz.sig
+            ridk exec bash -c "pacman-key --verify msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz.sig"
+            ridk exec bash -c "pacman -U --noconfirm --config <(echo) msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz"
+
+      - run:
+          # https://github.com/msys2/MSYS2-packages/issues/2300
+          name: prepare msys2- update zstd and pacman first
+          command: |
+            C:\msys64\usr\bin\pacman --noconfirm --upgrade https://repo.msys2.org/msys/x86_64/zstd-1.4.7-1-x86_64.pkg.tar.xz # Must come First, or else pacman will install 1.4.8
+            C:\msys64\usr\bin\pacman --noconfirm --upgrade https://repo.msys2.org/msys/x86_64/pacman-5.2.2-5-x86_64.pkg.tar.xz
+
+      - run:
+          name: prepare msys2- update packages
+          command: |
+            C:\msys64\usr\bin\pacman --noconfirm --ask 20 --sync --refresh --refresh --sysupgrade --sysupgrade
+
+      - run:
+          # Kill all running msys2 binaries to avoid error "size of shared memory region changed".
+          # See https://github.com/msys2/MSYS2-packages/issues/258
+          name: prepare msys2- stop processes
+          command: |
+            powershell -Command "Get-Process | Where-Object {$_.path -like 'C:\msys64*'} | Stop-Process"
+
+      - run:
+          # prevent freetds to link to wrong ws2_32 lib on i686-w64-mingw32
+          name: prepare msys2- avoid linking to wrong package
+          command: |
+            c:/msys64/usr/bin/rm /usr/lib/w32api/libws2_32.a
 
       - checkout
 
@@ -89,6 +128,16 @@ jobs:
           paths:
             - ./vendor/bundle
           key: v1-bundle-<< parameters.ruby_version >>-{{ .Branch }}-{{ checksum "tiny_tds.gemspec" }}
+
+      - run:
+          name: install ports
+          command: |
+            bundle exec rake ports
+
+      - run:
+          name: build gem
+          command: |
+            bundle exec rake build
 
       - run:
           # imported from setup.sh, although we should do better...

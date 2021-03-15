@@ -55,6 +55,11 @@ jobs:
             TINYTDS_UNIT_HOST=localhost bundle exec rake test
 
   cross_build:
+    parameters:
+      ruby_version:
+        description: "version tag for the veracross/circleci-ruby-freetds container"
+        type: string
+
     docker:
       - image: veracross/circleci-ruby-freetds:latest
 
@@ -149,7 +154,12 @@ workflows:
       #           - '2.5.3'
       #           - '2.7'
 
-      - cross_build
+      - cross_build:
+          matrix:
+            parameters:
+              ruby_version:
+                - '2.5.3'
+                - '2.7'
 
       - test_windows:
           requires:

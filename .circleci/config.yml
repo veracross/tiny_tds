@@ -75,9 +75,14 @@ jobs:
             gem --version
 
       - run:
+          name: install mingw
+          command: |
+            choco install mingw
+
+      - run:
           name: ridk install
           command: |
-            ridk install 3
+            ridk install 2 3
 
       - run:
           # https://www.msys2.org/news/#2020-06-29-new-packagers

@@ -75,6 +75,11 @@ jobs:
             gem --version
 
       - run:
+          name: ridk install
+          command: |
+            ridk install 3
+
+      - run:
           # https://www.msys2.org/news/#2020-06-29-new-packagers
           name: prepare msys2- update keyring
           command: |

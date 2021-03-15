@@ -75,9 +75,9 @@ jobs:
             gem --version
 
       - run:
-          name: install mingw
+          name: install msys2
           command: |
-            choco install mingw
+            choco install msys2
 
       - run:
           name: ridk install

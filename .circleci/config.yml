@@ -161,7 +161,7 @@ workflows:
           matrix:
             parameters:
               ruby_version:
-                - '2.5.3'
+                # - '2.5.3'
                 - '2.7'
 
       - test_windows:
@@ -170,5 +170,5 @@ workflows:
           matrix:
             parameters:
               ruby_version:
-                - '2.5.3'
+                # - '2.5.3'
                 - '2.7'

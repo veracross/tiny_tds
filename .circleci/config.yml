@@ -91,14 +91,9 @@ jobs:
           key: v1-bundle-<< parameters.ruby_version >>-{{ .Branch }}-{{ checksum "tiny_tds.gemspec" }}
 
       - run:
-          name: build prereqs
+          name: cross build gem
           command: |
-            bundle exec rake ports
-
-      - run:
-          name: build gem
-          command: |
-            bundle exec rake build
+            bundle exec rake gem:windows
 
       - run:
           # imported from setup.sh, although we should do better...

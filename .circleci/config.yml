@@ -87,6 +87,9 @@ jobs:
             - ./vendor/bundle
           key: v1-bundle-<< parameters.ruby_version >>-{{ .Branch }}-{{ checksum "tiny_tds.gemspec" }}
 
+      - setup_remote_docker:
+          version: 20.10.2
+
       - run:
           name: cross build gem
           command: |

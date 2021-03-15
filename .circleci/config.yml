@@ -44,6 +44,12 @@ jobs:
             bundle exec rake build
 
       - run:
+          # imported from setup.sh, although we should do better...
+          name: wait for database
+          command: |
+            sleep 10
+
+      - run:
           name: run tests
           command: |
             TINYTDS_UNIT_HOST=localhost bundle exec rake test
@@ -93,6 +99,12 @@ jobs:
           name: build gem
           command: |
             bundle exec rake build
+
+      - run:
+          # imported from setup.sh, although we should do better...
+          name: wait for database
+          command: |
+            sleep 10
 
       - run:
           name: run tests

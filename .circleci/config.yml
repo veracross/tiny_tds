@@ -85,15 +85,15 @@ jobs:
           command: |
             ridk install 2 3
 
-      - run:
-          name: diagnostics- perl modules
-          command: |
-            cpan -l
+      # - run:
+      #     name: diagnostics- perl modules
+      #     command: |
+      #       cpan -l
 
-      - run:
-          name: install Pod::Usage
-          command: |
-            cpanm Pod::Usage
+      # - run:
+      #     name: install Pod::Usage
+      #     command: |
+      #       cpanm Pod::Usage
 
       - checkout
 
@@ -119,6 +119,7 @@ jobs:
       - run:
           name: install ports
           command: |
+            ridk enable
             bundle exec rake ports
 
       - run:

@@ -117,11 +117,23 @@ jobs:
           key: v1-bundle-<< parameters.ruby_version >>-{{ .Branch }}-{{ checksum "tiny_tds.gemspec" }}
 
       - run:
-          name: install ports
+          name: build openssl
+          command: |
+            ridk enable
+            bundle exec rake ports:openssl
+
+      - run:
+          name: build libiconv
           no_output_timeout: 60m
           command: |
             ridk enable
-            bundle exec rake ports
+            bundle exec rake ports:libiconv
+
+      - run:
+          name: build freetds
+          command: |
+            ridk enable
+            bundle exec rake ports:freetds
 
       - run:
           name: build gem

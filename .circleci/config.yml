@@ -75,6 +75,16 @@ jobs:
             gem --version
 
       - run:
+          name: diagnostics- perl modules
+          command: |
+            cpan -l
+
+      - run:
+          name: install Pod::Usage
+          command: |
+            cpanm Pod::Usage
+
+      - run:
           name: install msys2
           command: |
             choco install msys2

@@ -65,25 +65,15 @@ jobs:
       shell: powershell.exe
 
     steps:
-      - run:
-          name: diagnostics
-          command: |
-            systeminfo
-            pwd
-            where perl
-            perl --version
-            ruby --version
-            gem --version
-
-      - run:
-          name: diagnostics- perl modules
-          command: |
-            cpan -l
-
-      - run:
-          name: install Pod::Usage
-          command: |
-            cpanm Pod::Usage
+      # - run:
+      #     name: diagnostics
+      #     command: |
+      #       systeminfo
+      #       pwd
+      #       where perl
+      #       perl --version
+      #       ruby --version
+      #       gem --version
 
       - run:
           name: install msys2
@@ -94,6 +84,16 @@ jobs:
           name: ridk install
           command: |
             ridk install 2 3
+
+      - run:
+          name: diagnostics- perl modules
+          command: |
+            cpan -l
+
+      - run:
+          name: install Pod::Usage
+          command: |
+            cpanm Pod::Usage
 
       - checkout
 
